@@ -1,22 +1,16 @@
-## Installation
+# Web3 Authentication (Frontend)
 
-```
-yarn create next-app
-```
+Built using [Next.js](https://nextjs.org/), this is a frontend for Web3 authentication using Metamask, Coinbase Wallet and Wallet Connect.
+
+It uses [web3-react](https://github.com/NoahZinsmeister/web3-react) package to connect to different wallets. There are more wallets than those listed above.
 
 ## Getting Started
 
-First, run the development server:
+To start the frontend server,
 
 ```bash
-npm run dev
-# or
+yarn
 yarn dev
 ```
 
-## Add dependencies
-
-```
-yarn add -D tailwindcss postcss autoprefixer
-yarn tailwindcss init -p
-```
+Note that the frontend server has to run together with the backend server to complete the authentication process.

@@ -1,0 +1,47 @@
+settings:
+  files:
+    outputs:
+      status: false
+      path: ""
+      name: .r.outputs.log
+    logs:
+      status: false
+      path: ""
+      name: .r.logs.log
+    errors:
+      status: false
+      path: ""
+      name: .r.errors.log
+  legacy:
+    force: true
+    interval: 0ms
+schema:
+  - name: web3-api
+    path: .
+    env:
+      APP_NAME: "web3-api"
+      APP_VERSION: "0.0.1"
+      ENV: "development"
+      PORT: "4000"
+      SYSTEM_PATH: "http://localhost:4000"
+      JWT_SECRET_KEY: "JWT-SECRET"
+
+      MONGODB_HOST: "localhost:27017"
+      MONGODB_USERNAME: "web3-admin"
+      MONGODB_PASSWORD: "password"
+      MONGODB_DBNAME: "web3"
+    commands:
+      install:
+        status: true
+        method: go install
+      run:
+        status: true
+    watcher:
+      extensions:
+        - go
+      paths:
+        - /
+      ignored_paths:
+        - .git
+        - .realize
+        - vendor
