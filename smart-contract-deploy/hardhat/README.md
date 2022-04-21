@@ -11,3 +11,9 @@
    ```sh
    npx hardhat run scripts/deploy.js --network <network_name>
    ```
+
+## Test the smart contract
+
+```sh
+npx hardhat test
+```
