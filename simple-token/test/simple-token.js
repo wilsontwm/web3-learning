@@ -31,6 +31,9 @@ describe("SimpleToken", function () {
       const resp = await simpleToken.connect(addr1).topup({ value: amount });
       const addr1Balance = await simpleToken.connect(addr1).getBalance();
       expect(addr1Balance).to.equal(amount);
+      expect(resp)
+        .to.emit(simpleToken, "Topup")
+        .withArgs(addr1.address, amount);
     });
 
     it("Should send 200 tokens successfully and reflect in the sender's and receiver's balance", async function () {
@@ -38,11 +41,14 @@ describe("SimpleToken", function () {
       // Topup the amount into the address 1 first
       await simpleToken.connect(addr1).topup({ value: amount });
       // Transfer the amount to address 2
-      await simpleToken.connect(addr1).send(addr2.address, amount);
+      const resp = await simpleToken.connect(addr1).send(addr2.address, amount);
       const addr1Balance = await simpleToken.connect(addr1).getBalance();
       expect(addr1Balance).to.equal(0);
       const addr2Balance = await simpleToken.connect(addr2).getBalance();
       expect(addr2Balance).to.equal(amount);
+      expect(resp)
+        .to.emit(simpleToken, "Sent")
+        .withArgs(addr1.address, addr2.address, amount);
     });
 
     it("Should fail to send 200 tokens due to insufficient fund in the balance", async function () {
@@ -76,6 +82,9 @@ describe("SimpleToken", function () {
       expect(withdrawAmount).to.equal(
         finalUserAccountBalance.sub(initialUserAccountBalance).add(totalGasCost)
       );
+      expect(withdrawTrx)
+        .to.emit(simpleToken, "Withdrew")
+        .withArgs(addr1.address, withdrawAmount);
     });
 
     it("Should fail to withdraw 200 tokens due to insufficient fund in the balance", async function () {

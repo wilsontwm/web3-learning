@@ -16,7 +16,6 @@ contract SimpleToken {
     event Topup(address from, uint256 amount);
     event Sent(address from, address to, uint256 amount);
     event Withdrew(address to, uint256 amount);
-    event Paid(address from, uint256 amount);
 
     // Only for minter of the contract
     modifier onlyMinter() {
