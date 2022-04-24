@@ -53,8 +53,6 @@ describe("SimpleToken", function () {
 
     it("Should fail to send 200 tokens due to insufficient fund in the balance", async function () {
       const amount = 200;
-      // Topup the amount into the address 1 first
-      // Transfer the amount to address 2
       const func = simpleToken.connect(addr1).send(addr2.address, amount);
       await expect(func).to.revertedWith("Insufficient balance");
     });
@@ -89,8 +87,6 @@ describe("SimpleToken", function () {
 
     it("Should fail to withdraw 200 tokens due to insufficient fund in the balance", async function () {
       const amount = 200;
-      // Topup the amount into the address 1 first
-      // Transfer the amount to address 2
       const func = simpleToken.connect(addr1).withdraw(amount);
       await expect(func).to.revertedWith("Insufficient balance");
     });
