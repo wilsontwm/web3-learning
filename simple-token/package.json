@@ -1,14 +1,40 @@
 {
-  "name": "hardhat-project",
+  "name": "simple-token",
+  "scripts": {
+    "dev": "next dev -p 4000",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.5",
     "@nomiclabs/hardhat-waffle": "^2.0.3",
+    "@types/node": "^17.0.26",
+    "@types/react": "^18.0.6",
+    "@types/react-dom": "^18.0.2",
+    "autoprefixer": "^10.4.5",
     "chai": "^4.3.6",
     "ethereum-waffle": "^3.4.4",
-    "ethers": "^5.6.4",
-    "hardhat": "^2.9.3"
+    "hardhat": "^2.9.3",
+    "postcss": "^8.4.12",
+    "tailwindcss": "^3.0.24",
+    "typescript": "^4.6.3"
   },
   "dependencies": {
-    "bignumber": "^1.1.0"
+    "@coinbase/wallet-sdk": "^3.0.8",
+    "@heroicons/react": "^1.0.6",
+    "@reduxjs/toolkit": "^1.8.1",
+    "@walletconnect/ethereum-provider": "^1.7.7",
+    "@web3-react/coinbase-wallet": "8.0.26-beta.0",
+    "@web3-react/core": "8.0.23-beta.0",
+    "@web3-react/metamask": "8.0.19-beta.0",
+    "@web3-react/types": "8.0.12-beta.0",
+    "@web3-react/walletconnect": "8.0.26-beta.0",
+    "bignumber": "^1.1.0",
+    "ethers": "^5.6.4",
+    "next": "^12.1.5",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "react-redux": "^8.0.1"
   }
 }
