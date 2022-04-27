@@ -19,3 +19,15 @@
   opacity: 0.3;
   pointer-events: none;
 }
+
+html,
+body,
+body > div:first-child,
+div#__next,
+div#__next > div {
+  min-height: 100%;
+}
+
+input.error {
+  @apply border-red-500;
+}

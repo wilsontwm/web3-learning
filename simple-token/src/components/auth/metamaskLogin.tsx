@@ -34,7 +34,6 @@ export default function MetaMaskLogin(props: MetaMaskLoginProps) {
   }, [isActivating]);
 
   useEffect(() => {
-    console.log("Metamask", isActive, accounts, error);
     if (isActive) {
       props.activate(accounts[0], metaMask.constructor.name);
     } else {

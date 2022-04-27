@@ -1,4 +1,5 @@
 import "../styles/globals.css";
+import "react-toastify/dist/ReactToastify.css";
 import type { AppProps } from "next/app";
 import { Provider } from "react-redux";
 import { store } from "../store/store";
@@ -15,6 +16,7 @@ import {
   hooks as walletConnectHooks,
   walletConnect,
 } from "../connectors/walletconnect";
+import { ToastContainer } from "react-toastify";
 
 const connectors: [
   MetaMask | WalletConnect | CoinbaseWallet,
@@ -30,6 +32,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     <Provider store={store}>
       <Web3ReactProvider connectors={connectors}>
         <Component {...pageProps} />
+        <ToastContainer />
       </Web3ReactProvider>
     </Provider>
   );
