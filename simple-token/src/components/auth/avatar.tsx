@@ -1,13 +1,13 @@
 import { useEffect } from "react";
 import { useAppSelector, useAppDispatch } from "../../store/store";
 import { useWeb3React } from "@web3-react/core";
-import { deactivate } from "../../store/reducers/authSlice";
+import { activate, deactivate } from "../../store/reducers/authSlice";
 import { getBalance } from "../../store/reducers/walletSlice";
 import { CashIcon, DuplicateIcon, LogoutIcon } from "@heroicons/react/outline";
 import { showNotification } from "../../utils/toast";
 
 export function Avatar() {
-  const { connector } = useWeb3React();
+  const { connector, account } = useWeb3React();
   const dispatch = useAppDispatch();
   const currentAddress: string = useAppSelector(
     (state) => state.auth.currentAddress
@@ -17,6 +17,14 @@ export function Avatar() {
   useEffect(() => {
     refreshBalance();
   }, [currentAddress]);
+
+  useEffect(() => {
+    dispatch(
+      activate({
+        currentAddress: account,
+      })
+    );
+  }, [account]);
 
   useEffect(() => {
     const interval = setInterval(() => {
