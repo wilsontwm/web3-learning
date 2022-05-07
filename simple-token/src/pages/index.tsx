@@ -1,5 +1,6 @@
 import type { NextPage } from "next";
 import { useWeb3React } from "@web3-react/core";
+import { useMemo } from "react";
 import { useAppSelector, useAppDispatch } from "../store/store";
 import { activate, activating, deactivate } from "../store/reducers/authSlice";
 import CoinbaseWalletLogin from "../components/auth/coinbaseWalletLogin";
@@ -11,10 +12,14 @@ import { showNotification } from "../utils/toast";
 // import WalletConnectLogin from "../components/auth/walletConnectLogin";
 
 const Home: NextPage = () => {
-  const { connector, provider } = useWeb3React();
+  const { connector, chainId } = useWeb3React();
   const dispatch = useAppDispatch();
   const currentAddress: string = useAppSelector(
     (state) => state.auth.currentAddress
+  );
+  const isRinkebyConnected = useMemo(
+    () => currentAddress && chainId == 4,
+    [currentAddress, chainId]
   );
 
   const setIsActivating = (isActivating: boolean) => {
@@ -58,7 +63,7 @@ const Home: NextPage = () => {
           </h2>
         </div>
         <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-          {currentAddress && (
+          {isRinkebyConnected && (
             <>
               <Avatar />
               <hr className="my-2" />
@@ -77,6 +82,11 @@ const Home: NextPage = () => {
                 activate={loginAccount}
                 deactivate={logoutAccount}
               />
+            </div>
+          )}
+          {currentAddress && !isRinkebyConnected && (
+            <div className="bg-white py-8 px-4 sm:px-10">
+              Please connect to Rinkeby testnet
             </div>
           )}
         </div>

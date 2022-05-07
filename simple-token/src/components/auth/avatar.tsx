@@ -7,7 +7,7 @@ import { CashIcon, DuplicateIcon, LogoutIcon } from "@heroicons/react/outline";
 import { showNotification } from "../../utils/toast";
 
 export function Avatar() {
-  const { connector, account } = useWeb3React();
+  const { connector, account, chainId } = useWeb3React();
   const dispatch = useAppDispatch();
   const currentAddress: string = useAppSelector(
     (state) => state.auth.currentAddress
