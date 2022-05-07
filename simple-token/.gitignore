@@ -1,4 +1,5 @@
 node_modules
+.next
 .env
 coverage
 coverage.json
@@ -6,4 +7,3 @@ typechain
 
 #Hardhat files
 cache
-artifacts

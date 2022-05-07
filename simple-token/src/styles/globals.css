@@ -1,0 +1,33 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary-50: #f8dfd6;
+  --primary-100: #f4caba;
+  --primary-200: #f0b59f;
+  --primary-300: #eba083;
+  --primary-400: #e78b68;
+  --primary-500: #e3764c;
+  --primary-600: #df6536;
+  --primary-700: #ce5121;
+  --primary-800: #b3461c;
+  --primary-900: #973b18;
+}
+
+[disabled] {
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+html,
+body,
+body > div:first-child,
+div#__next,
+div#__next > div {
+  min-height: 100%;
+}
+
+input.error {
+  @apply border-red-500;
+}
