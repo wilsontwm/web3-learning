@@ -6,7 +6,7 @@ import { useAppDispatch } from "../../store/store";
 import { Button } from "../general/button";
 import { showNotification } from "../../utils/toast";
 import { combineClassNames } from "../../utils/html";
-import { getBalance, topupBalance } from "../../store/reducers/walletSlice";
+import { topupBalance } from "../../store/reducers/walletSlice";
 import type { TopupBalanceResponse } from "../../pages/api/simpleToken";
 
 const schema = yup
@@ -25,6 +25,7 @@ export function TopupForm() {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
@@ -37,9 +38,9 @@ export function TopupForm() {
       const response: TopupBalanceResponse = await dispatch(
         topupBalance(data)
       ).unwrap();
-      console.log("Final response", response.hash);
+
       if (response.hash) {
-        await dispatch(getBalance());
+        reset();
       }
     } catch (e) {
       showNotification((e as Error).message, "error");

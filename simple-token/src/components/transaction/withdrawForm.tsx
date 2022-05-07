@@ -2,9 +2,12 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { useAppDispatch } from "../../store/store";
 import { Button } from "../general/button";
 import { showNotification } from "../../utils/toast";
 import { combineClassNames } from "../../utils/html";
+import { withdrawBalance } from "../../store/reducers/walletSlice";
+import type { WithdrawBalanceResponse } from "../../pages/api/simpleToken";
 
 const schema = yup
   .object({
@@ -16,21 +19,32 @@ const schema = yup
   .required();
 
 export function WithdrawForm() {
+  const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState(false);
 
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = (data: any) => {
+  const onSubmit = async (data: { amount: number }) => {
     setIsLoading(true);
-    showNotification("Success Notification !", "success");
 
-    console.log("Inputs", data);
+    try {
+      const response: WithdrawBalanceResponse = await dispatch(
+        withdrawBalance(data)
+      ).unwrap();
+
+      if (response.hash) {
+        reset();
+      }
+    } catch (e) {
+      showNotification((e as Error).message, "error");
+    }
 
     setIsLoading(false);
   };

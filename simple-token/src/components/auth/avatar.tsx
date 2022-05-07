@@ -18,6 +18,13 @@ export function Avatar() {
     refreshBalance();
   }, [currentAddress]);
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      refreshBalance();
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
+
   const refreshBalance = async () => {
     if (currentAddress) {
       await dispatch(getBalance());

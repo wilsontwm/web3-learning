@@ -7,6 +7,11 @@ export interface TopupBalanceResponse {
   hash?: string;
 }
 
+export interface WithdrawBalanceResponse {
+  error?: string;
+  hash?: string;
+}
+
 export async function getBalance(): Promise<number> {
   try {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -43,9 +48,33 @@ export async function topupBalance(payload: {
     const topupResponse = await simpleToken.connect(signer).topup({
       value: amount,
     });
-    console.log("Topup response", topupResponse);
     showNotification("Topup successful!", "success");
     return { hash: topupResponse.hash };
+  } catch (e) {
+    const error = (e as Error).message;
+    showNotification(error, "error");
+    return { error: error };
+  }
+}
+
+export async function withdrawBalance(payload: {
+  amount: number;
+}): Promise<WithdrawBalanceResponse> {
+  try {
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = provider.getSigner();
+    const simpleToken = new ethers.Contract(
+      process.env.CONTRACT_ADDRESS,
+      SimpleTokenContract.abi,
+      signer
+    );
+
+    const amount = ethers.utils.parseUnits(payload.amount.toString(), "ether");
+
+    const withdrawResponse = await simpleToken.connect(signer).withdraw(amount);
+
+    showNotification("Withdraw successful!", "success");
+    return { hash: withdrawResponse.hash };
   } catch (e) {
     const error = (e as Error).message;
     showNotification(error, "error");
