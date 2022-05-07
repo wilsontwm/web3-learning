@@ -1,21 +1,28 @@
+import { useEffect } from "react";
 import { useAppSelector, useAppDispatch } from "../../store/store";
+import { useWeb3React } from "@web3-react/core";
 import { deactivate } from "../../store/reducers/authSlice";
-import { metaMask } from "../../connectors/metamask";
-import { coinbaseWallet } from "../../connectors/coinbase-wallet";
-import { walletConnect } from "../../connectors/walletconnect";
+import { getBalance } from "../../store/reducers/walletSlice";
 import { CashIcon, DuplicateIcon, LogoutIcon } from "@heroicons/react/outline";
 import { showNotification } from "../../utils/toast";
 
 export function Avatar() {
+  const { connector } = useWeb3React();
   const dispatch = useAppDispatch();
   const currentAddress: string = useAppSelector(
     (state) => state.auth.currentAddress
   );
-  const connectorType: string = useAppSelector(
-    (state) => state.auth.connectorType
-  );
+  const balance: number = useAppSelector((state) => state.wallet.balance);
 
-  const refreshBalance = () => {};
+  useEffect(() => {
+    refreshBalance();
+  }, [currentAddress]);
+
+  const refreshBalance = async () => {
+    if (currentAddress) {
+      await dispatch(getBalance());
+    }
+  };
 
   const copyAddressToClipboard = () => {
     navigator.clipboard.writeText(currentAddress);
@@ -23,19 +30,7 @@ export function Avatar() {
   };
 
   const logoutAccount = async () => {
-    switch (connectorType) {
-      case metaMask.constructor.name:
-        await metaMask.deactivate();
-        break;
-      case coinbaseWallet.constructor.name:
-        coinbaseWallet.deactivate();
-        break;
-      case walletConnect.constructor.name:
-        await walletConnect.deactivate();
-        break;
-      default:
-        return;
-    }
+    await connector.deactivate();
     dispatch(deactivate());
   };
 
@@ -59,7 +54,7 @@ export function Avatar() {
               onClick={refreshBalance}
             >
               <CashIcon className="w-4 h-4 mr-1" aria-hidden="true" />
-              0.00025
+              {balance}
             </button>
             <button
               className="ml-2 mt-2 text-xs background-transparent inline-flex hover:text-primary-600"

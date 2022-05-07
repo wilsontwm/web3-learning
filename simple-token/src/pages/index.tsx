@@ -1,51 +1,44 @@
 import type { NextPage } from "next";
+import { useWeb3React } from "@web3-react/core";
 import { useAppSelector, useAppDispatch } from "../store/store";
 import { activate, activating, deactivate } from "../store/reducers/authSlice";
-import { metaMask } from "../connectors/metamask";
-import { coinbaseWallet } from "../connectors/coinbase-wallet";
-import { walletConnect } from "../connectors/walletconnect";
 import CoinbaseWalletLogin from "../components/auth/coinbaseWalletLogin";
 import MetaMaskLogin from "../components/auth/metamaskLogin";
 import { Avatar } from "../components/auth/avatar";
 import { Transaction } from "../components/transaction/transaction";
+import { ethers } from "ethers";
+import { showNotification } from "../utils/toast";
 // import WalletConnectLogin from "../components/auth/walletConnectLogin";
 
 const Home: NextPage = () => {
+  const { connector, provider } = useWeb3React();
   const dispatch = useAppDispatch();
   const currentAddress: string = useAppSelector(
     (state) => state.auth.currentAddress
-  );
-  const connectorType: string = useAppSelector(
-    (state) => state.auth.connectorType
   );
 
   const setIsActivating = (isActivating: boolean) => {
     dispatch(activating(isActivating));
   };
 
-  const loginAccount = (currentAddress: string, connectorType: string) => {
+  const loginAccount = (currentAddress: string) => {
+    // client side code
+    if (!window.ethereum) {
+      showNotification("Please install a Web3 wallet", "info");
+      return;
+    }
+
+    if (!currentAddress || !ethers.utils.isAddress(currentAddress)) return;
+
     dispatch(
       activate({
         currentAddress,
-        connectorType,
       })
     );
   };
 
   const logoutAccount = async () => {
-    switch (connectorType) {
-      case metaMask.constructor.name:
-        await metaMask.deactivate();
-        break;
-      case coinbaseWallet.constructor.name:
-        coinbaseWallet.deactivate();
-        break;
-      case walletConnect.constructor.name:
-        await walletConnect.deactivate();
-        break;
-      default:
-        return;
-    }
+    await connector.deactivate();
     dispatch(deactivate());
   };
 

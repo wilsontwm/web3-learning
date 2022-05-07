@@ -2,10 +2,12 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { useAppDispatch } from "../../store/store";
 import { Button } from "../general/button";
 import { showNotification } from "../../utils/toast";
 import { combineClassNames } from "../../utils/html";
-import { Input } from "../general/inputs";
+import { getBalance, topupBalance } from "../../store/reducers/walletSlice";
+import type { TopupBalanceResponse } from "../../pages/api/simpleToken";
 
 const schema = yup
   .object({
@@ -17,6 +19,7 @@ const schema = yup
   .required();
 
 export function TopupForm() {
+  const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState(false);
 
   const {
@@ -27,11 +30,20 @@ export function TopupForm() {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = (data: any) => {
+  const onSubmit = async (data: { amount: number }) => {
     setIsLoading(true);
-    showNotification("Success Notification !", "success");
 
-    console.log("Inputs", data);
+    try {
+      const response: TopupBalanceResponse = await dispatch(
+        topupBalance(data)
+      ).unwrap();
+      console.log("Final response", response.hash);
+      if (response.hash) {
+        await dispatch(getBalance());
+      }
+    } catch (e) {
+      showNotification((e as Error).message, "error");
+    }
 
     setIsLoading(false);
   };

@@ -4,7 +4,6 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 // Define a type for the slice state
 interface AuthState {
   currentAddress: string;
-  connectorType: string;
   isActive: boolean;
   isActivating: boolean;
 }
@@ -12,14 +11,12 @@ interface AuthState {
 // Define the initial state using that type
 const initialState: AuthState = {
   currentAddress: "",
-  connectorType: "",
   isActive: false,
   isActivating: false,
 };
 
 interface ActivatePayload {
   currentAddress: string;
-  connectorType: string;
 }
 
 export const authSlice = createSlice({
@@ -28,7 +25,6 @@ export const authSlice = createSlice({
   reducers: {
     activate: (state, action: PayloadAction<ActivatePayload>) => {
       state.currentAddress = action.payload.currentAddress;
-      state.connectorType = action.payload.connectorType;
       state.isActive = true;
       state.isActivating = false;
     },
@@ -37,7 +33,6 @@ export const authSlice = createSlice({
     },
     deactivate: (state) => {
       state.currentAddress = "";
-      state.connectorType = "";
       state.isActive = false;
       state.isActivating = false;
     },

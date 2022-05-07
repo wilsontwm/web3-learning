@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { hooks, metaMask } from "../../connectors/metamask";
 import { AuthButton } from "./authButton";
+import { ethers } from "ethers";
 
 const {
   useChainId,
@@ -8,7 +9,7 @@ const {
   useError,
   useIsActivating,
   useIsActive,
-  // useProvider,
+  useProvider,
   // useENSNames,
 } = hooks;
 
@@ -26,7 +27,7 @@ export default function MetaMaskLogin(props: MetaMaskLoginProps) {
 
   const isActive = useIsActive();
 
-  // const provider = useProvider();
+  const provider = useProvider();
   // const ENSNames = useENSNames(provider);
 
   useEffect(() => {

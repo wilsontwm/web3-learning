@@ -5,7 +5,6 @@ import * as yup from "yup";
 import { Button } from "../general/button";
 import { showNotification } from "../../utils/toast";
 import { combineClassNames } from "../../utils/html";
-import { Input } from "../general/inputs";
 
 const schema = yup
   .object({
